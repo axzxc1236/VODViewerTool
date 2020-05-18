@@ -1,0 +1,43 @@
+Body {
+	background-color: AliceBlue
+}
+
+#Settings {
+	background-color: lightyellow;
+}
+
+#Settings input[type=text] {
+	width: 300px;
+}
+
+#Videos {
+	background-color: lightyellow;
+}
+
+#Videos input[type=text] {
+	width: 300px;
+}
+
+#VideoInfos {
+	border-collapse: collapse;
+}
+
+#VideoInfos td {
+	border: 1px solid black;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+#Calculation {
+	background-color: lightyellow;
+}
+
+#timestampResult {
+	border-collapse: collapse;
+}
+
+#timestampResult td {
+	border: 1px solid black;
+	padding-left: 4px;
+	padding-right: 4px;
+}

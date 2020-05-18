@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<title>Vod viewer tool</title>
+		<script src="ldom.min.js"></script>
+		<script src="main.js"></script>
+		<script src="twitch.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">		
+		<meta charset="UTF-8">
+	</head>
+	<body onload="pageLoad()">
+		
+		<div id="Settings">
+			ALL Settings are saved in your browser (localStorage), doesn't send to any web server.<br/>
+			ClientID: <input type="text" id="ClientID"/> <input type="button" id="setClientID" value="Set ClientID"/><br/>
+			Time format:
+				<input type="radio" name="TimeFormat" class="TimeFormat" value="local">Use Local time</input>
+				<input type="radio" name="TimeFormat" class="TimeFormat" value="GMT">Use GMT time</input>
+				<br/> 
+			<text id="settingSaved"/>
+		</div>
+		<br/>
+		<div id="Videos">
+			Add videos to do analysis.<br/>
+			Video URL: <input type="text" id="URL"/> <input type="button" id="addVideo" value="Add Video"/><br/>
+			(format: https://www.twitch.tv/videos/xxxxxxxx, can be a url that has timestamp)<br/>
+			<table id="VideoInfos">
+				<tr>
+					<td>Streamer</td>
+					<td>Title</td>
+					<td>Start time</td>
+					<td>VOD length</td>
+					<td>Remove?</td>
+				</tr>
+			</table>
+		</div>
+		<br/>
+		<div id="Calculation">
+			In this area you can calculate timestamp of other VODs based on a timestamp of a VOD.<br/>
+			<select id="VODs">
+				<option value="">(Choose a VOD)</option>
+			</select>
+			<br/>
+			Timestamp (in hh:mm:ss format)  <input type="text" id="VODtimestamp"/>
+			<br/>
+			<input id="timestampCalc" type="button" value="Start Calculation">
+			<br/>
+			Result:
+			<br/>
+			<table id="timestampResult">
+			</table>
+		</div>
+	</body>
+</html>
