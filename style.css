@@ -41,3 +41,11 @@ Body {
 	padding-left: 4px;
 	padding-right: 4px;
 }
+
+#API_Info {
+	background-color: LightGreen;
+}
+
+#HelixAuthenticationStatus {
+	color: lightslategray;
+}
