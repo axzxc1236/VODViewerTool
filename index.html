@@ -16,6 +16,30 @@
 				<input type="radio" name="TimeFormat" class="TimeFormat" value="local">Use Local time</input>
 				<input type="radio" name="TimeFormat" class="TimeFormat" value="GMT">Use GMT time</input>
 				<br/> 
+			API version:
+				<input type="radio" name="APIVersion" class="APIVersion" value="V5">V5</input>
+				<input type="radio" name="APIVersion" class="APIVersion" value="Helix">Helix</input>
+				<br/> 
+			<div id="API_Info">
+				There are two versions of Twitch API you can choose, <b>doesn't effect the tool's functionality</b>.<br/>
+				<ul>
+					<li>V5</li>
+						V5 is the old API which has been announced by Twitch as depreciated<br/>
+						(For about 2 years when I am writing this text)<br/>
+						That means this API will be shutdown in a unknown time<br/>
+						This version of API doesn't require user authentication.
+					<li>Helix</li>
+						Helix is the currently official supported API.<br/>
+						Requires a token to use, which requires a Twitch account<br/>
+						This tool doesn't need any permission that can access your private information<br/>
+						Your token stays in your browser unless you are using a malicious browser (extension)
+				</ul>
+				<input id="HideAPIInfo" type="button" value="Ok, I know it, don't show it to me again.">
+			</div>
+			<div id="HelixAuthentication">
+				Helix Authentication Status: <text id="HelixAuthenticationStatus"></text><br/>
+				<a href="(Dynamically generated url)">Click me to start authentication process</a>
+			</div>
 			<text id="settingSaved"/>
 		</div>
 		<br/>

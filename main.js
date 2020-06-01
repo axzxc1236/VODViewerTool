@@ -15,25 +15,45 @@ function pageLoad() {
 	if (localStorage.getItem("TimezoneFormat") != "local" && localStorage.getItem("TimezoneFormat") != "GMT")
 		localStorage.setItem("TimezoneFormat", "local");
 	$(`.TimeFormat[value=${localStorage.getItem("TimezoneFormat")}]`).get(0).click();
+	if (localStorage.getItem("APIVersion") != "V5" && localStorage.getItem("APIVersion") != "Helix")
+		localStorage.setItem("APIVersion", "V5");
+	$(`.APIVersion[value=${localStorage.getItem("APIVersion")}]`).get(0).click();
+	toggleHelixAuthVisibility();
+	buildHelixAuthURL();
+	if (localStorage.getItem("hideAPIInfo"))
+		$("#API_Info").hide();
+	const HelixToken = location.hash.match(/#access_token=([^&]+?)&scope=&token_type=bearer/);
+	if (HelixToken) {
+		localStorage.setItem("HelixToken", HelixToken[1]);
+		alert("Received OAuth token from Twitch, now you can use Helix API.");
+	}
+	$("#HelixAuthenticationStatus").text(
+		localStorage.getItem("HelixToken")?
+		"OK, you can use Helix API!":
+		"ERROR, you need a token in order to use this API."
+	);
 	
 	//Event listener
 	$("#setClientID").on("click", saveClientID);
 	$("#addVideo").on("click", addVideo);
 	$(".TimeFormat").on("click", saveTimezoneFormat);
 	$("#timestampCalc").on("click", timestampCalculation);
+	$(".APIVersion").on("click", saveAPIVersion);
+	$("#HideAPIInfo").on("click", hideAPIInfo);
 }
 
 function saveClientID() {
 	if ($("#ClientID").attr("value") != "") {
 		localStorage.setItem("ClientID", $("#ClientID").get(0).value);
 		$("#settingSaved").text("ClientID is saved!");
+		buildHelixAuthURL();
 	}
 	else alert("Invalid ClientID");
 }
 
 function saveTimezoneFormat() {
 	localStorage.setItem("TimezoneFormat", this.attr("value"));
-	$("#settingSaved").text("Timezone Set to " + this.attr("value"));
+	$("#settingSaved").text("Timezone set to " + this.attr("value"));
 	
 	//Convert time format on table
 	for (i=0; i<videoinfos.length; i++) {
@@ -43,6 +63,31 @@ function saveTimezoneFormat() {
 			new Date(videoinfos[i].recorded_at).toGMTString()
 		)
 	}
+}
+
+function saveAPIVersion() {
+	localStorage.setItem("APIVersion", this.attr("value"));
+	$("#settingSaved").text("API version set to " + this.attr("value"));
+	toggleHelixAuthVisibility();
+}
+
+function toggleHelixAuthVisibility() {
+	if (localStorage.getItem("APIVersion") == "V5")
+		$("#HelixAuthentication").hide();
+	else
+		$("#HelixAuthentication").show();
+}
+
+function buildHelixAuthURL() {	
+	const current_page = location.protocol + "//" + location.host + location.pathname;
+	const client_id = localStorage.getItem("ClientID");
+	$("#HelixAuthentication a").attr("href", `https://id.twitch.tv/oauth2/authorize?client_id=${client_id}&redirect_uri=${current_page}&response_type=token&scope=`);
+}
+
+function hideAPIInfo() {
+	localStorage.setItem("hideAPIInfo", true);
+	$("#API_Info").hide();
+	$("#settingSaved").text("API version info will never show up again.");
 }
 
 function addVideo() {	
@@ -86,6 +131,9 @@ function addVideo() {
 				//Add option to Calculation area
 				$("#VODs").appendChild($("<option>").attr("value", btnindex).text(info.channel + " - " + info.title));
 			}
+		})
+		.catch(error => {
+			alert(JSON.stringify(error));
 		})
 	}
 	else alert("The url provided doesn't match required format\n(or maybe Twitch changed VOD url format? IDK)");
